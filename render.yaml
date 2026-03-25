@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: military-backend
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: node -e "require('./seed-if-empty.js')().then(() => require('child_process').spawn('node', ['server.js'], {stdio: 'inherit'}))"
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGO_URI
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: COMMANDER_PASSWORD
+        sync: false
+      - key: LOGISTICS_PASSWORD
+        sync: false
