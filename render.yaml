@@ -4,7 +4,7 @@ services:
     env: node
     plan: free
     buildCommand: npm install
-    startCommand: node -e "require('./seed-if-empty.js')().then(() => require('child_process').spawn('node', ['server.js'], {stdio: 'inherit'}))"
+    startCommand: npm start
     envVars:
       - key: NODE_ENV
         value: production

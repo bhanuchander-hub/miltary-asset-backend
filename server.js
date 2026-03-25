@@ -25,13 +25,23 @@ app.get('/api/health', (req, res) => res.json({ status: 'ok' }));
 const PORT = process.env.PORT || 5000;
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/military_assets';
 
-mongoose
-  .connect(MONGO_URI)
-  .then(() => {
+async function startServer() {
+  try {
+    // Run seed if needed
+    const seedIfEmpty = require('./seed-if-empty.js');
+    await seedIfEmpty();
+    console.log('Seed check complete');
+    
+    // Connect to MongoDB
+    await mongoose.connect(MONGO_URI);
     console.log('MongoDB connected');
+    
+    // Start server
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-  })
-  .catch((err) => {
-    console.error('MongoDB connection error:', err);
+  } catch (err) {
+    console.error('Server startup error:', err);
     process.exit(1);
-  });
+  }
+}
+
+startServer();
